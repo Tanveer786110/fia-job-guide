@@ -13,6 +13,9 @@ app.get("/", (req, res) => {
 app.post("/api/analyze", async (req, res) => {
   const { topicLabel, score, total, wrongQuestions } = req.body;
 
+  console.log("AI request aaya!");
+  console.log("API Key:", process.env.GEMINI_API_KEY ? "KEY MILI ✅" : "KEY NAHI ❌");
+
   const wrongList = wrongQuestions?.map(w =>
     `Q: ${w.question}\nTumhara jawab: ${w.chosen}\nSahi jawab: ${w.correct}`
   ).join('\n\n') || 'Koi galat jawab nahi.';
@@ -26,29 +29,25 @@ app.post("/api/analyze", async (req, res) => {
         body: JSON.stringify({
           contents: [{
             parts: [{
-              text: `FIA Sub-Inspector exam quiz result:
-Topic: ${topicLabel}
-Score: ${score}/${total}
-
-Galat sawaal:
-${wrongList}
-
-Urdu mein short weakness analysis do aur improvement tips do. 5-6 lines mein.`
+              text: `FIA Sub-Inspector exam quiz result:\nTopic: ${topicLabel}\nScore: ${score}/${total}\n\nGalat sawaal:\n${wrongList}\n\nUrdu mein short weakness analysis do aur improvement tips do. 5-6 lines mein.`
             }]
           }]
         })
       }
     );
 
+    console.log("Gemini response status:", response.status);
     const data = await response.json();
-    const analysis = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    console.log("Gemini data:", JSON.stringify(data).slice(0, 200));
 
+    const analysis = data.candidates?.[0]?.content?.parts?.[0]?.text;
     if (analysis) {
       res.json({ analysis });
     } else {
       res.json({ analysis: "Analysis nahi aayi. Dobara try karein." });
     }
   } catch (err) {
+    console.log("ERROR:", err.message);
     res.status(500).json({ error: "Server error", detail: err.message });
   }
 });
