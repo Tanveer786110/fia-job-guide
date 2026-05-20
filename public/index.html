@@ -40,6 +40,63 @@
     --border: rgba(201,162,39,0.25);
   }
 
+  /* ── GLOBAL ANIMATIONS ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 10px rgba(201,162,39,0.3); }
+    50% { box-shadow: 0 0 25px rgba(201,162,39,0.7), 0 0 50px rgba(201,162,39,0.3); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes countUp {
+    from { transform: translateY(10px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes bounceIn {
+    0%   { transform: scale(0.3); opacity: 0; }
+    50%  { transform: scale(1.05); }
+    70%  { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes confetti-fall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+  @keyframes timerPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
@@ -50,13 +107,14 @@
     font-size: 14px;
   }
 
-  /* HEADER */
+  /* ── HERO ANIMATED ── */
   .hero {
     background: linear-gradient(135deg, #060e1f 0%, #0a1628 50%, #0d2040 100%);
     border-bottom: 3px solid var(--gold);
     padding: 50px 40px 40px;
     position: relative;
     overflow: hidden;
+    animation: fadeInDown 0.8s ease;
   }
   .hero::before {
     content: '';
@@ -78,6 +136,7 @@
     border-radius: 2px;
     margin-bottom: 20px;
     text-transform: uppercase;
+    animation: glow 2s ease-in-out infinite;
   }
   .hero h1 {
     font-family: 'Playfair Display', serif;
@@ -86,15 +145,18 @@
     line-height: 1.15;
     color: #fff;
     margin-bottom: 12px;
+    animation: fadeInUp 0.8s ease 0.2s both;
   }
   .hero h1 span { color: var(--gold); }
   .hero p {
     color: var(--muted);
     font-size: 15px;
     max-width: 700px;
+    animation: fadeInUp 0.8s ease 0.4s both;
   }
   .hero-meta {
     display: flex; gap: 30px; margin-top: 28px; flex-wrap: wrap;
+    animation: fadeInUp 0.8s ease 0.6s both;
   }
   .hero-stat {
     text-align: center;
@@ -102,6 +164,13 @@
     border: 1px solid var(--border);
     border-radius: 6px;
     padding: 12px 20px;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+  .hero-stat:hover {
+    transform: translateY(-4px);
+    background: rgba(201,162,39,0.15);
+    box-shadow: 0 8px 20px rgba(201,162,39,0.2);
   }
   .hero-stat .num {
     font-family: 'IBM Plex Mono', monospace;
@@ -110,7 +179,11 @@
   }
   .hero-stat .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
 
-  /* NAV */
+  /* ── COUNTDOWN SECONDS PULSE ── */
+  #cd-secs { animation: timerPulse 1s ease-in-out infinite; }
+  #cd-days  { animation: countUp 0.5s ease; }
+
+  /* ── NAV ── */
   .toc {
     background: var(--deep);
     border-bottom: 1px solid var(--border);
@@ -490,15 +563,20 @@
     border: 1px solid var(--border);
     border-radius: 6px; padding: 14px 12px;
     text-align: center; cursor: pointer;
-    transition: all 0.2s; color: var(--text);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    color: var(--text);
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 13px;
+    animation: fadeInUp 0.4s ease both;
   }
   .cat-btn:hover, .cat-btn.selected {
     border-color: var(--gold);
     background: rgba(201,162,39,0.12);
     color: var(--gold-light);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(201,162,39,0.2);
   }
+  .cat-btn:active { transform: scale(0.97); }
   .cat-btn .cat-icon { font-size: 22px; margin-bottom: 6px; display: block; }
   .cat-btn .cat-count {
     font-family: 'IBM Plex Mono', monospace;
@@ -515,14 +593,15 @@
     border: none; cursor: pointer;
     padding: 14px; border-radius: 5px;
     box-shadow: 0 4px 20px rgba(201,162,39,0.3);
-    transition: all 0.2s; margin-top: 12px;
+    transition: all 0.3s ease; margin-top: 12px;
+    animation: glow 2s ease-in-out infinite;
   }
-  .quiz-start-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(201,162,39,0.45); }
-  .quiz-start-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .quiz-start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,162,39,0.5); }
+  .quiz-start-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; animation: none; }
 
   /* Quiz Active State */
   .quiz-screen { display: none; }
-  .quiz-screen.active { display: block; }
+  .quiz-screen.active { display: block; animation: fadeInUp 0.4s ease; }
 
   .quiz-progress-bar {
     height: 5px; background: rgba(255,255,255,0.08);
@@ -563,11 +642,17 @@
     background: var(--card);
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 6px; padding: 12px 16px;
-    cursor: pointer; transition: all 0.2s;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     color: #c5cfe0; font-size: 14px;
     display: flex; align-items: center; gap: 10px;
+    animation: slideInLeft 0.3s ease both;
   }
-  .quiz-opt:hover { border-color: var(--gold); background: rgba(201,162,39,0.07); color: var(--text); }
+  .quiz-opt:nth-child(1) { animation-delay: 0.05s; }
+  .quiz-opt:nth-child(2) { animation-delay: 0.10s; }
+  .quiz-opt:nth-child(3) { animation-delay: 0.15s; }
+  .quiz-opt:nth-child(4) { animation-delay: 0.20s; }
+  .quiz-opt:hover { border-color: var(--gold); background: rgba(201,162,39,0.07); color: var(--text); transform: translateX(5px); }
   .quiz-opt .opt-letter {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11px; font-weight: 700;
@@ -580,22 +665,35 @@
   }
   .quiz-opt.correct {
     border-color: var(--teal); background: rgba(26,188,156,0.12); color: var(--teal);
+    animation: bounceIn 0.5s ease;
   }
   .quiz-opt.correct .opt-letter { background: var(--teal); color: var(--navy); }
   .quiz-opt.wrong {
     border-color: var(--red); background: rgba(192,57,43,0.12); color: #e74c3c;
+    animation: fadeInUp 0.3s ease;
   }
   .quiz-opt.wrong .opt-letter { background: var(--red); color: #fff; }
   .quiz-opt.reveal {
     border-color: rgba(26,188,156,0.3); background: rgba(26,188,156,0.06);
+    animation: bounceIn 0.5s ease 0.2s both;
   }
   .quiz-opt.disabled { cursor: not-allowed; }
+
+  /* Confetti */
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    animation: confetti-fall 1.5s ease-in forwards;
+    z-index: 9999;
+    pointer-events: none;
+  }
 
   .quiz-feedback {
     margin-top: 16px; padding: 14px 18px; border-radius: 6px;
     display: none; font-size: 14px; line-height: 1.5;
   }
-  .quiz-feedback.show { display: block; }
+  .quiz-feedback.show { display: block; animation: fadeInUp 0.3s ease; }
   .quiz-feedback.fb-correct { background: rgba(26,188,156,0.1); border-left: 3px solid var(--teal); color: var(--teal); }
   .quiz-feedback.fb-wrong { background: rgba(192,57,43,0.1); border-left: 3px solid var(--red); color: #e74c3c; }
 
@@ -1617,7 +1715,29 @@ console.log('%cOwner: fiajobguide.netlify.app', 'color:#8899b4;font-size:12px;')
         <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:#fff;">Apna Topic Choose Karein</h3>
         <p style="color:var(--muted);font-size:12px;margin-top:4px;">Har topic ka alag quiz — targeted preparation!</p>
       </div>
-      <div id="catGrid" style="max-height:380px;overflow-y:auto;padding-right:4px;"></div>
+
+      <!-- SPECIAL MODES -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        
+        <!-- Top 40 Button -->
+        <button onclick="startTop40()" style="background:linear-gradient(135deg,#c9a227,#f0c84a);color:#0a1628;border:none;border-radius:12px;padding:12px 10px;cursor:pointer;text-align:left;">
+          <div style="font-size:16px;margin-bottom:3px;">🏆</div>
+          <div style="font-size:12px;font-weight:800;line-height:1.3;">Top 40 Expected</div>
+          <div style="font-size:10px;opacity:0.7;margin-top:2px;">Highest chance questions</div>
+        </button>
+
+        <!-- Smart Mode Button -->
+        <button onclick="startSmartMode()" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;border:none;border-radius:12px;padding:12px 10px;cursor:pointer;text-align:left;">
+          <div style="font-size:16px;margin-bottom:3px;">⚡</div>
+          <div style="font-size:12px;font-weight:800;line-height:1.3;">Smart Mode</div>
+          <div style="font-size:10px;opacity:0.7;margin-top:2px;">10 questions, max result</div>
+        </button>
+
+      </div>
+
+      <div style="font-size:10px;color:#8899b4;text-align:center;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">— Ya topic choose karo —</div>
+
+      <div id="catGrid" style="max-height:320px;overflow-y:auto;padding-right:4px;"></div>
       <button class="quiz-start-btn" id="btnStartQuiz" onclick="startQuiz()" disabled>▶ Start Quiz</button>
     </div>
 
@@ -2280,6 +2400,89 @@ const TOPICS = {
 };
 
 // ============================================================
+// CONFETTI
+// ============================================================
+function launchConfetti() {
+  const colors = ['#f0c84a','#22c55e','#3b82f6','#f97316','#ec4899','#a78bfa'];
+  for (let i = 0; i < 30; i++) {
+    setTimeout(() => {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.cssText = `
+        left: ${Math.random() * 100}vw;
+        top: -10px;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        width: ${6 + Math.random() * 8}px;
+        height: ${6 + Math.random() * 8}px;
+        border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+        animation-duration: ${1 + Math.random() * 1.5}s;
+        animation-delay: ${Math.random() * 0.3}s;
+      `;
+      document.body.appendChild(piece);
+      setTimeout(() => piece.remove(), 2000);
+    }, i * 20);
+  }
+}
+
+// ============================================================
+// TOP 40 & SMART MODE
+// ============================================================
+
+// Top 40 — highest probability questions across all topics
+function startTop40() {
+  const top40 = [];
+  // Probability ke hisaab se sort karo — highest pehle
+  const sortedTopics = Object.entries(TOPIC_PROBABILITY)
+    .sort((a, b) => b[1].pct - a[1].pct);
+
+  sortedTopics.forEach(([key]) => {
+    if (TOPICS[key] && top40.length < 40) {
+      const qs = TOPICS[key].qs.slice(0, Math.ceil(40 / sortedTopics.length));
+      qs.forEach(q => {
+        if (top40.length < 40) top40.push({...q, _topic: key});
+      });
+    }
+  });
+
+  // Quiz shuru karo
+  currentTopic = 'top40';
+  questions = top40.sort(() => Math.random() - 0.5);
+  current = 0; score = 0; answered = false; wrongAnswers = [];
+
+  // Special label
+  TOPICS['top40'] = { label: '🏆 Top 40 Most Expected', subject: 'Mixed', color: '#c9a227', qs: top40 };
+
+  document.getElementById('screenPicker').classList.remove('active');
+  document.getElementById('screenQuestion').classList.add('active');
+  renderQuestion();
+}
+
+// Smart Mode — sirf 10 highest probability questions
+function startSmartMode() {
+  const smartQs = [];
+  const sortedTopics = Object.entries(TOPIC_PROBABILITY)
+    .sort((a, b) => b[1].pct - a[1].pct)
+    .slice(0, 10); // Top 10 topics
+
+  sortedTopics.forEach(([key]) => {
+    if (TOPICS[key] && TOPICS[key].qs.length > 0) {
+      const randomQ = TOPICS[key].qs[Math.floor(Math.random() * TOPICS[key].qs.length)];
+      smartQs.push({...randomQ, _topic: key});
+    }
+  });
+
+  currentTopic = 'smart';
+  questions = smartQs;
+  current = 0; score = 0; answered = false; wrongAnswers = [];
+
+  TOPICS['smart'] = { label: '⚡ Smart Mode — Top 10', subject: 'Mixed', color: '#7c3aed', qs: smartQs };
+
+  document.getElementById('screenPicker').classList.remove('active');
+  document.getElementById('screenQuestion').classList.add('active');
+  renderQuestion();
+}
+
+// ============================================================
 // STATE
 // ============================================================
 let currentTopic = null;
@@ -2425,8 +2628,11 @@ function selectAnswer(chosen, correct, q) {
   opts.forEach(o => o.classList.add('disabled'));
 
   const isCorrect = chosen === correct;
-  if (isCorrect) { opts[chosen].classList.add('correct'); score++; }
-  else {
+  if (isCorrect) {
+    opts[chosen].classList.add('correct');
+    score++;
+    launchConfetti();
+  } else {
     opts[chosen].classList.add('wrong');
     opts[correct].classList.add('reveal');
     wrongAnswers.push({ question: q.q, chosen: q.opts[chosen], correct: q.opts[correct] });
@@ -2548,4 +2754,11 @@ async function getAIAnalysis() {
 </section>
 
 <!-- FIXED BOTTOM BAR -->
-<div style="position:fixed;bottom:0;left:0;right:0;background:rgba(10,22,40,0.95);backdrop-filter:blur
+<div style="position:fixed;bottom:0;left:0;right:0;background:rgba(10,22,40,0.95);backdrop-filter:blur(10px);border-top:1px solid rgba(201,162,39,0.2);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;z-index:50;gap:8px;">
+  <span style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#8899b4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;">FIA Sub-Inspector 2026 — fiajobguide.netlify.app</span>
+  <a href="https://api.whatsapp.com/send?text=FIA%20Sub-Inspector%202026%20%E2%80%94%20Pakistan%20ka%20best%20AI-powered%20exam%20prep%20site!%20Free%20MCQs%2C%20past%20papers%20aur%20smart%20analysis%20%F0%9F%9A%80%0Ahttps%3A%2F%2Ffiajobguide.netlify.app" target="_blank" rel="noopener" onclick="gtag('event','whatsapp_share',{'event_category':'engagement','event_label':'bottom_bar'})" style="display:inline-flex;align-items:center;gap:6px;background:#25D366;color:#fff;border:none;padding:9px 14px;border-radius:50px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0;text-decoration:none;">📤 Share</a>
+  <button onclick="openQuiz()" style="background:linear-gradient(135deg,#c9a227,#f0c84a);color:#0a1628;border:none;padding:9px 18px;border-radius:50px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0;">🎯 Quiz</button>
+</div>
+
+</body>
+</html>
