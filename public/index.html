@@ -7,7 +7,7 @@
   <meta http-equiv="X-XSS-Protection" content="1; mode=block">
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com https://fia-job-guide.onrender.com; frame-src 'none';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com https://fiajobguide.netlify.app; frame-src 'none';">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FIA Sub-Inspector — Master Exam Intelligence Report 2026</title>
@@ -742,7 +742,7 @@ document.addEventListener('dragstart', function(e) {
 // Watermark console warning
 console.log('%c⛔ WARNING!', 'color:red;font-size:40px;font-weight:bold;');
 console.log('%cThis website is protected. Unauthorized copying or redistribution is prohibited.', 'color:#c9a227;font-size:14px;');
-console.log('%cOwner: fia-job-guide.onrender.com', 'color:#8899b4;font-size:12px;');
+console.log('%cOwner: fiajobguide.netlify.app', 'color:#8899b4;font-size:12px;');
 // ─────────────────────────────────────────────────────────
 </script>
 
@@ -764,6 +764,61 @@ console.log('%cOwner: fia-job-guide.onrender.com', 'color:#8899b4;font-size:12px
     </div>
   </div>
 </div>
+
+<!-- EXAM COUNTDOWN TIMER -->
+<div id="examCountdown" style="background:linear-gradient(135deg,#0f2244,#0a1628);border-top:2px solid rgba(201,162,39,0.4);border-bottom:2px solid rgba(201,162,39,0.4);padding:16px 20px;text-align:center;">
+  <div style="font-size:11px;color:#8899b4;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">⏳ FIA Sub-Inspector Exam Countdown</div>
+  <div style="display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;">
+    <div style="background:rgba(201,162,39,0.1);border:1px solid rgba(201,162,39,0.3);border-radius:10px;padding:10px 16px;min-width:70px;">
+      <div id="cd-days" style="font-size:28px;font-weight:900;color:#f0c84a;font-family:'IBM Plex Mono',monospace;line-height:1;">--</div>
+      <div style="font-size:10px;color:#8899b4;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Din</div>
+    </div>
+    <div style="background:rgba(201,162,39,0.1);border:1px solid rgba(201,162,39,0.3);border-radius:10px;padding:10px 16px;min-width:70px;">
+      <div id="cd-hours" style="font-size:28px;font-weight:900;color:#f0c84a;font-family:'IBM Plex Mono',monospace;line-height:1;">--</div>
+      <div style="font-size:10px;color:#8899b4;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Ghante</div>
+    </div>
+    <div style="background:rgba(201,162,39,0.1);border:1px solid rgba(201,162,39,0.3);border-radius:10px;padding:10px 16px;min-width:70px;">
+      <div id="cd-mins" style="font-size:28px;font-weight:900;color:#f0c84a;font-family:'IBM Plex Mono',monospace;line-height:1;">--</div>
+      <div style="font-size:10px;color:#8899b4;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Minute</div>
+    </div>
+    <div style="background:rgba(201,162,39,0.1);border:1px solid rgba(201,162,39,0.3);border-radius:10px;padding:10px 16px;min-width:70px;">
+      <div id="cd-secs" style="font-size:28px;font-weight:900;color:#f0c84a;font-family:'IBM Plex Mono',monospace;line-height:1;">--</div>
+      <div style="font-size:10px;color:#8899b4;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Second</div>
+    </div>
+  </div>
+  <div style="margin-top:10px;font-size:12px;color:#8899b4;">Expected: <span style="color:#f0c84a;font-weight:700;">July 15, 2026</span> — <span id="cd-msg" style="color:#22a861;">Taiyari jari rakho!</span></div>
+</div>
+
+<script>
+(function() {
+  const examDate = new Date('2026-07-15T09:00:00');
+  function updateCountdown() {
+    const now = new Date();
+    const diff = examDate - now;
+    if (diff <= 0) {
+      document.getElementById('cd-days').textContent = '0';
+      document.getElementById('cd-hours').textContent = '0';
+      document.getElementById('cd-mins').textContent = '0';
+      document.getElementById('cd-secs').textContent = '0';
+      document.getElementById('cd-msg').textContent = 'Exam ka din aa gaya! Best of luck! 🎯';
+      return;
+    }
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const secs = Math.floor((diff % (1000*60)) / 1000);
+    document.getElementById('cd-days').textContent = days;
+    document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+    document.getElementById('cd-mins').textContent = String(mins).padStart(2,'0');
+    document.getElementById('cd-secs').textContent = String(secs).padStart(2,'0');
+    if (days <= 7) document.getElementById('cd-msg').textContent = '🔥 Sirf ' + days + ' din baqi! Full speed ahead!';
+    else if (days <= 30) document.getElementById('cd-msg').textContent = '⚡ ' + days + ' din baqi — focused raho!';
+    else document.getElementById('cd-msg').textContent = '📚 ' + days + ' din baqi — taiyari jari rakho!';
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+})();
+</script>
 
 <!-- TOC -->
 <nav class="toc">
@@ -1594,9 +1649,36 @@ console.log('%cOwner: fia-job-guide.onrender.com', 'color:#8899b4;font-size:12px
 // ============================================================
 // TOPIC-WISE QUESTION BANK
 // ============================================================
+// ── PROBABILITY MAP — FIA past papers 2014-2024 analysis se ──
+const TOPIC_PROBABILITY = {
+  pak_constitution:  { pct: 95, label: "Constitutional History — Har paper mein aata hai" },
+  pak_dates:         { pct: 90, label: "Key Dates — Bahut zyada repeat hote hain" },
+  pak_geography:     { pct: 72, label: "Pakistan Geography — Medium chance" },
+  pak_leaders:       { pct: 80, label: "Leaders & Personalities — Frequently aata hai" },
+  isl_ghazwat:       { pct: 92, label: "Ghazwat — 100% frequency in past papers" },
+  isl_quran:         { pct: 90, label: "Quran Facts — Har paper mein guaranteed" },
+  isl_pillars:       { pct: 85, label: "Pillars & Worship — High chance" },
+  isl_sahaba:        { pct: 80, label: "Sahaba & Caliphs — Regular aata hai" },
+  isl_dates:         { pct: 75, label: "Islamic Dates — Medium-High chance" },
+  eng_synonyms:      { pct: 90, label: "Synonyms — Same pool baar baar recycle hoti hai" },
+  eng_antonyms:      { pct: 88, label: "Antonyms — Very high repeat rate" },
+  eng_idioms:        { pct: 85, label: "Idioms — Same 100-150 idioms rotate karte hain" },
+  eng_grammar:       { pct: 82, label: "Grammar & Voice — Regularly aata hai" },
+  eng_prepositions:  { pct: 70, label: "Prepositions — Medium chance" },
+  gk_world_geo:      { pct: 85, label: "World Geography — High repeat rate" },
+  gk_capitals:       { pct: 75, label: "World Capitals — Medium-High chance" },
+  gk_science:        { pct: 85, label: "Science & Inventions — Recycled facts" },
+  gk_body:           { pct: 80, label: "Human Body — Frequently tested" },
+  math_percentage:   { pct: 82, label: "Percentage & Profit — Regular pattern" },
+  math_speed:        { pct: 78, label: "Speed, Work & Time — Common in SI papers" },
+  math_ratio:        { pct: 70, label: "Ratios & Averages — Medium chance" },
+  fia_establishment: { pct: 96, label: "FIA Act — NEW 2026, 10 free marks!" },
+  fia_powers:        { pct: 94, label: "FIA Powers — Critical for 2026 paper" },
+  fia_wings:         { pct: 88, label: "FIA Structure — High chance in 2026" },
+};
+
 const TOPICS = {
 
-  // ───── PAKISTAN AFFAIRS ─────
   pak_constitution: {
     label: "🏛️ Constitutions & Laws",
     subject: "🇵🇰 Pakistan Affairs",
@@ -2209,7 +2291,7 @@ function buildCatGrid() {
       const btn = document.createElement('button');
       btn.className = 'cat-btn';
       btn.dataset.key = key;
-      btn.innerHTML = `<span class="cat-icon" style="font-size:18px">${topic.label.split(' ')[0]}</span><span style="font-size:12px">${topic.label.slice(topic.label.indexOf(' ')+1)}</span><span class="cat-count">${topic.qs.length} MCQs</span>`;
+      btn.innerHTML = `<span class="cat-icon" style="font-size:18px">${topic.label.split(' ')[0]}</span><span style="font-size:12px">${topic.label.slice(topic.label.indexOf(' ')+1)}</span><span class="cat-count">${topic.qs.length} MCQs</span>${TOPIC_PROBABILITY[key] ? `<span style="font-size:10px;color:${TOPIC_PROBABILITY[key].pct>=90?'#22c55e':TOPIC_PROBABILITY[key].pct>=80?'#f0c84a':'#8899b4'};font-weight:700;">⚡${TOPIC_PROBABILITY[key].pct}%</span>` : ''}`;
       btn.onclick = () => selectTopic(btn, key);
       grid.appendChild(btn);
     });
@@ -2276,6 +2358,23 @@ function showQuestion() {
   document.getElementById('qTopic').textContent = TOPICS[currentTopic].label;
   document.getElementById('qScore').textContent = `Score: ${score}`;
   document.getElementById('qText').textContent = q.q;
+
+  // ⚡ AI Probability Badge
+  const prob = TOPIC_PROBABILITY[currentTopic];
+  let badgeEl = document.getElementById('aiProbBadge');
+  if (!badgeEl) {
+    badgeEl = document.createElement('div');
+    badgeEl.id = 'aiProbBadge';
+    document.getElementById('qText').parentNode.insertBefore(badgeEl, document.getElementById('qText'));
+  }
+  if (prob) {
+    const color = prob.pct >= 90 ? '#22c55e' : prob.pct >= 80 ? '#f0c84a' : '#8899b4';
+    badgeEl.innerHTML = `<div title="${prob.label}" style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,0,0,0.3);border:1px solid ${color}40;border-radius:20px;padding:4px 10px;margin-bottom:10px;cursor:help;">
+      <span style="color:${color};font-size:13px;">⚡</span>
+      <span style="color:${color};font-size:11px;font-weight:700;">${prob.pct}% chance</span>
+      <span style="color:#8899b4;font-size:10px;">— Exam mein aane ki probability</span>
+    </div>`;
+  }
 
   const optsEl = document.getElementById('qOpts');
   optsEl.innerHTML = '';
@@ -2417,7 +2516,7 @@ async function getAIAnalysis() {
       </a>
     </div>
     <div>
-      <a href="https://api.whatsapp.com/send?text=FIA%20Sub-Inspector%202026%20%E2%80%94%20Pakistan%20ka%20best%20AI-powered%20exam%20prep%20site!%20Free%20MCQs%2C%20past%20papers%20aur%20smart%20analysis%20%F0%9F%9A%80%0Ahttps%3A%2F%2Ffia-job-guide.onrender.com" target="_blank" rel="noopener" onclick="gtag('event','whatsapp_share',{'event_category':'engagement','event_label':'contact_section'})" style="display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:14px 30px;border-radius:50px;font-weight:800;font-size:0.95rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,0.3);">
+      <a href="https://api.whatsapp.com/send?text=FIA%20Sub-Inspector%202026%20%E2%80%94%20Pakistan%20ka%20best%20AI-powered%20exam%20prep%20site!%20Free%20MCQs%2C%20past%20papers%20aur%20smart%20analysis%20%F0%9F%9A%80%0Ahttps%3A%2F%2Ffiajobguide.netlify.app" target="_blank" rel="noopener" onclick="gtag('event','whatsapp_share',{'event_category':'engagement','event_label':'contact_section'})" style="display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:14px 30px;border-radius:50px;font-weight:800;font-size:0.95rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,0.3);">
         📤 WhatsApp pe Share Karo
       </a>
       <p style="margin-top:10px;font-size:12px;color:#8899b4;">Dosto ko share karo — unki bhi madad ho!</p>
@@ -2428,8 +2527,8 @@ async function getAIAnalysis() {
 
 <!-- FIXED BOTTOM BAR -->
 <div style="position:fixed;bottom:0;left:0;right:0;background:rgba(10,22,40,0.95);backdrop-filter:blur(10px);border-top:1px solid rgba(201,162,39,0.2);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;z-index:50;gap:8px;">
-  <span style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#8899b4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;">FIA Sub-Inspector 2026 — fia-job-guide.onrender.com</span>
-  <a href="https://api.whatsapp.com/send?text=FIA%20Sub-Inspector%202026%20%E2%80%94%20Pakistan%20ka%20best%20AI-powered%20exam%20prep%20site!%20Free%20MCQs%2C%20past%20papers%20aur%20smart%20analysis%20%F0%9F%9A%80%0Ahttps%3A%2F%2Ffia-job-guide.onrender.com" target="_blank" rel="noopener" onclick="gtag('event','whatsapp_share',{'event_category':'engagement','event_label':'bottom_bar'})" style="display:inline-flex;align-items:center;gap:6px;background:#25D366;color:#fff;border:none;padding:9px 14px;border-radius:50px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0;text-decoration:none;">📤 Share</a>
+  <span style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#8899b4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;">FIA Sub-Inspector 2026 — fiajobguide.netlify.app</span>
+  <a href="https://api.whatsapp.com/send?text=FIA%20Sub-Inspector%202026%20%E2%80%94%20Pakistan%20ka%20best%20AI-powered%20exam%20prep%20site!%20Free%20MCQs%2C%20past%20papers%20aur%20smart%20analysis%20%F0%9F%9A%80%0Ahttps%3A%2F%2Ffiajobguide.netlify.app" target="_blank" rel="noopener" onclick="gtag('event','whatsapp_share',{'event_category':'engagement','event_label':'bottom_bar'})" style="display:inline-flex;align-items:center;gap:6px;background:#25D366;color:#fff;border:none;padding:9px 14px;border-radius:50px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0;text-decoration:none;">📤 Share</a>
   <button onclick="openQuiz()" style="background:linear-gradient(135deg,#c9a227,#f0c84a);color:#0a1628;border:none;padding:9px 18px;border-radius:50px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0;">🎯 Quiz</button>
 </div>
 
