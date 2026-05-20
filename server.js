@@ -1,57 +1,64 @@
-const express = require("express");
-const path = require("path");
+const express = require('express');
+const path = require('path');
 const app = express();
-const PORT = process.env.PORT || 10000;
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
+// AI Analysis endpoint
+app.post('/api/analyze', async (req, res) => {
+  const { topic, topicLabel, score, total, wrongQuestions } = req.body;
 
-app.post("/api/analyze", async (req, res) => {
-  const { topicLabel, score, total, wrongQuestions } = req.body;
+  if (!topic || score === undefined || !total) {
+    return res.status(400).json({ error: 'Missing data' });
+  }
 
-  console.log("AI request aaya!");
-  console.log("API Key:", process.env.GEMINI_API_KEY ? "KEY MILI ✅" : "KEY NAHI ❌");
+  const wrongSummary = (wrongQuestions || []).slice(0, 8)
+    .map((q, i) => `${i+1}. Q: "${q.question}" — Chosen: "${q.chosen}" | Correct: "${q.correct}"`)
+    .join('\n');
 
-  const wrongList = wrongQuestions?.map(w =>
-    `Q: ${w.question}\nTumhara jawab: ${w.chosen}\nSahi jawab: ${w.correct}`
-  ).join('\n\n') || 'Koi galat jawab nahi.';
+  const accuracy = Math.round((score / total) * 100);
+
+  const prompt = `FIA exam coach. Student quiz result:
+Topic: ${topicLabel}, Score: ${score}/${total} (${accuracy}%)
+Wrong: ${wrongSummary || 'None'}
+
+Reply in Roman Urdu. Max 150 words. Format:
+📊 Summary: [1 line]
+⚠️ Weak: [topics]
+💡 Tips: [2 tips]
+🎯 Message: [motivation]`;
 
   try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: `FIA Sub-Inspector exam quiz result:\nTopic: ${topicLabel}\nScore: ${score}/${total}\n\nGalat sawaal:\n${wrongList}\n\nUrdu mein short weakness analysis do aur improvement tips do. 5-6 lines mein.`
-            }]
-          }]
-        })
-      }
-    );
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'llama3-8b-8192',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 300,
+        temperature: 0.7
+      })
+    });
 
-    console.log("Gemini response status:", response.status);
-    const data = await response.json();
-    console.log("Gemini data:", JSON.stringify(data).slice(0, 200));
-
-    const analysis = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (analysis) {
-      res.json({ analysis });
-    } else {
-      res.json({ analysis: "Analysis nahi aayi. Dobara try karein." });
+    if (!response.ok) {
+      const err = await response.text();
+      console.error('Groq error:', err);
+      return res.status(502).json({ error: 'AI service error' });
     }
+
+    const data = await response.json();
+    const analysis = data.choices[0].message.content;
+    res.json({ analysis, accuracy });
+
   } catch (err) {
-    console.log("ERROR:", err.message);
-    res.status(500).json({ error: "Server error", detail: err.message });
+    console.error('Server error:', err);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
-app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
