@@ -917,34 +917,44 @@ console.log('%cOwner: fiajobguide.netlify.app', 'color:#8899b4;font-size:12px;')
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
 (function() {
   const examDate = new Date('2026-06-20T09:00:00');
   function updateCountdown() {
     const now = new Date();
     const diff = examDate - now;
+    const dEl = document.getElementById('cd-days');
+    const hEl = document.getElementById('cd-hours');
+    const mEl = document.getElementById('cd-mins');
+    const sEl = document.getElementById('cd-secs');
+    const msgEl = document.getElementById('cd-msg');
+    if (!dEl) return;
     if (diff <= 0) {
-      document.getElementById('cd-days').textContent = '0';
-      document.getElementById('cd-hours').textContent = '0';
-      document.getElementById('cd-mins').textContent = '0';
-      document.getElementById('cd-secs').textContent = '0';
-      document.getElementById('cd-msg').textContent = 'Exam ka din aa gaya! Best of luck! 🎯';
+      dEl.textContent = '0';
+      hEl.textContent = '0';
+      mEl.textContent = '0';
+      sEl.textContent = '0';
+      if (msgEl) msgEl.textContent = 'Exam ka din aa gaya! Best of luck! 🎯';
       return;
     }
     const days = Math.floor(diff / (1000*60*60*24));
     const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
     const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
     const secs = Math.floor((diff % (1000*60)) / 1000);
-    document.getElementById('cd-days').textContent = days;
-    document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
-    document.getElementById('cd-mins').textContent = String(mins).padStart(2,'0');
-    document.getElementById('cd-secs').textContent = String(secs).padStart(2,'0');
-    if (days <= 7) document.getElementById('cd-msg').textContent = '🔥 Sirf ' + days + ' din baqi! Full speed ahead!';
-    else if (days <= 30) document.getElementById('cd-msg').textContent = '⚡ ' + days + ' din baqi — focused raho!';
-    else document.getElementById('cd-msg').textContent = '📚 ' + days + ' din baqi — taiyari jari rakho!';
+    dEl.textContent = days;
+    hEl.textContent = String(hours).padStart(2,'0');
+    mEl.textContent = String(mins).padStart(2,'0');
+    sEl.textContent = String(secs).padStart(2,'0');
+    if (msgEl) {
+      if (days <= 7) msgEl.textContent = '🔥 Sirf ' + days + ' din baqi! Full speed ahead!';
+      else if (days <= 30) msgEl.textContent = '⚡ ' + days + ' din baqi — focused raho!';
+      else msgEl.textContent = '📚 ' + days + ' din baqi — taiyari jari rakho!';
+    }
   }
   updateCountdown();
   setInterval(updateCountdown, 1000);
 })();
+});
 </script>
 
 <!-- TOC -->
