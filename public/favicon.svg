@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="20" fill="#0a3d20"/>
+  <text x="50" y="58" font-size="52" text-anchor="middle" font-family="monospace" font-weight="700" fill="#c9a227">P</text>
+  <rect x="20" y="65" width="60" height="2" fill="#c9a227" opacity="0.5"/>
+  <text x="50" y="80" font-size="13" text-anchor="middle" font-family="monospace" font-weight="600" fill="#4ade80">EXAM.AI</text>
+</svg>
